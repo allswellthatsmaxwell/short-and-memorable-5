@@ -1,6 +1,7 @@
 /**
  * Representation of a graph vertex
  */
+ //just making sure I can edit-Minerva
 public class Vertex implements Dijkstrable<Vertex> {
 	private final String label;   // label attached to this vertex
 	private int costFromStart;
