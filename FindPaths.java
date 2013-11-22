@@ -8,20 +8,20 @@ import java.io.*;
 
 public class FindPaths {
 	public static void main(String[] args) {
-		if(args.length != 2) {
+		/*if(args.length != 2) {
 			System.err.println("USAGE: java Paths <vertex_file> <edge_file>");
 			System.exit(1);
-		}
-
-		MyGraph g = readGraph(args[0],args[1]);
+		}*/
+		
+		MyGraph g = readGraph("vertex.txt", "edge.txt");
 
 		Scanner console = new Scanner(System.in);
 		Collection<Vertex> v = g.vertices();
-                Collection<Edge> e = g.edges();
+      Collection<Edge> e = g.edges();
 		System.out.println("Vertices are "+v);
 		System.out.println("Edges are "+e);
-		// System.out.println();
-		// System.out.println(g.getMST());
+		System.out.println();
+		System.out.println(g.getMST());
       
 		while(true) {
 			System.out.print("Start vertex? ");

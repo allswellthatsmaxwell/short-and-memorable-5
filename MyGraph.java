@@ -122,35 +122,29 @@ public class MyGraph implements Graph {
 	* returns a minimum spanning tree of the graph. 
 	* Assumes Edge is Comparable by edge weight.
 	*/
-	public Set<Edge> getMST() {
-		// uses Kruskal's algorithm
-		Map<Vertex, Integer> vertexTable = new HashMap<Vertex, Integer>();
-		DisjointSets disjEdges = new MyDisjSets(graph.keySet().size());
-		Set<Edge> mst = new HashSet<Edge>();
-		PriorityQueue<Edge> pq = new PriorityQueue<Edge>();
-		// fill priority queue with edges
-		for (Vertex v : graph.keySet())
-			for (Edge e : graph.get(v))
-				pq.add(e);
-	
-		// establishes a correspondence between the 0 to V-1 numbers in disj sets
-		// and our vertices
-		int i = 0;
-		for (Vertex v : graph.keySet()) {
-			vertexTable.put(v, i);
-			i++;
-		}
-		// while at one or more vertices are not part of the mst
-		while (disjEdges.numSets() > 1) {
-			Edge edge = pq.remove();
-			mst.add(edge);
-			disjEdges.union(disjEdges.find(vertexTable.get((edge.getSource()))), 
-					disjEdges.find(vertexTable.get((edge.getDestination()))));
-		}
-		return Collections.unmodifiableSet(mst);
-	}
-
-   /**
+   public Set<Edge> getMST() {
+	       // uses Kruskal's algorithm
+			 Set<Vertex> vert = new HashSet<Vertex>();
+	       Set<Edge> mst = new HashSet<Edge>();
+	       PriorityQueue<Edge> pq = new PriorityQueue<Edge>();
+	       for (Vertex v : graph.keySet())
+	               for (Edge e : graph.get(v))
+	                       pq.add(e);
+	  		 int num = graph.keySet().size();
+			 System.out.println("priority queue: " + pq);    
+			 while (vert.size() < num) {
+	            Edge edge = pq.remove();
+					Vertex x = edge.getDestination();
+					if(!vert.contains(x)){
+						System.out.print("edges as added: " + edge);
+						mst.add(edge);
+	          		vert.add(x);  	
+					}
+	       }
+			 System.out.println();
+	       return Collections.unmodifiableSet(mst);
+     }
+  /**
     * Returns the shortest path from a to b in the graph, or null if there is
     * no such path.  Assumes all edge weights are nonnegative.
     * Uses Dijkstra's algorithm.
