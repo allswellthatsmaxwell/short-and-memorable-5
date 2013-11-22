@@ -37,7 +37,16 @@ public class FindPaths {
 				System.out.println("no such vertex");
 				System.exit(1);
 			}
-			System.out.println(g.shortestPath(a, b));
+			Path p = g.shortestPath(a, b);
+			System.out.println("Shortest path from " + a + " to " + b);
+			if(p == null){
+				System.out.println("does not exist");
+			} else {
+				for (Vertex vert: p.vertices){
+					System.out.print(vert + " ");
+				}
+				System.out.println(p.cost);
+			}
 		}
 	}
 
