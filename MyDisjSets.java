@@ -1,9 +1,10 @@
-// Minerva Chen, Max Peterson
-// 11/3/2013
-// MyDisjSets
-//
-// Implements disjoint sets. Uses weighted union and path compression to
-// improve asymptotic speed.
+/** Minerva Chen, Max Peterson
+* 11/25/2013
+* MyDisjSets
+*
+* Implements disjoint sets. Uses weighted union and path compression to
+* improve asymptotic speed.
+*/
 
 public class MyDisjSets implements DisjointSets {
 	private int[] up;
@@ -14,8 +15,9 @@ public class MyDisjSets implements DisjointSets {
 	* Required constructor.
 	* @param numElements is the total number of elements, each element is 
 	* initially in its own set.
-	*/
+	*/	
 	public MyDisjSets(int numElements) {
+		this.numElements = numElements;
 		up = new int[numElements];
 		for (int i = 0; i < numElements; i++)
 			up[i] = -1; // Negative denotes root. Each element is initially a tree of size 1
@@ -23,53 +25,64 @@ public class MyDisjSets implements DisjointSets {
 		numSets = numElements;
 	}
 
-	// returns the total number of sets
+	/** 
+	* @return the total number of sets
+	*/
 	public int numSets() {
 		return numSets;
 	}
 	
-	// set1 and set2 must be valid elements of a set. Otherwise, throws 
-	// InvalidElementException. They must also be valid names of sets. Otherwise,
-	// throws InvalidSetNameException.	
-	// combines set1 and set2 into a larger set containing all elements of both sets.
-	// Makes the smaller set a part of the larger set, i.e. performs weighted union.
+	/** 
+	* @param set1 the name of a set
+	* @param set2 the name of another set
+	* @throws InvalidElementException if set1 or set2 are not valid set elements.
+	* @throws InvalidSetNameException if set1 or set2 are not set names.	
+	* combines set1 and set2 into a larger set containing all elements of both sets.
+	* Makes the smaller set a part of the larger set, i.e. performs weighted union.
+	*/
 	public void union(int set1, int set2) {
 		checkException(set1);
 		checkException(set2);
 		// perform weighted union - make the smaller set part of the larger set,
 		// never vice-versa.
-		if (up[set1] < up[set2]) { // set1 is the larger set
-			up[set1] += up[set2];
-			up[set2] = set1; 
-		} else { // set2 is larger than set1 or same size
-			up[set2] += up[set1];
-			up[set1] = set2;
+		if (set1 != set2) {
+			if (up[set1] < up[set2]) { // set1 is the larger set
+				up[set1] += up[set2];
+				up[set2] = set1; 
+			} else { // set2 is larger than set1 or same size
+				up[set2] += up[set1];
+				up[set1] = set2;
+			}
+			numSets--;
 		}
-		numSets--;
 	}
-
-	// setNum must be a valid element of a set. Otherwise, throws 
-	// InvalidElementException. It must also be a valid name of a set. Otherwise,
-	// throws InvalidSetNameException.	
-	// returns total number of elements in setNum.
+	
+	/**
+	* @throws InvalidElementException if setNum is not a valid element of a set. 
+	* @throws InvalidSetNameException if setNum is not a valid name of a set.
+	* @return total number of elements in setNum.
+	*/
 	public int numElements(int setNum) {
 		checkException(setNum);
 		return -up[setNum]; // roots have size as a negative number, so negate for positive
 	}
 	
-	// setNum must be a valid element of a set. Otherwise, throws 
-	// InvalidElementException. It must also be a valid name of a set. Otherwise,
-	// throws InvalidSetNameException.		
-	// returns true if setName is the name of a set, false otherwise
+	/**
+	* @throws InvalidElementException if setNum is not a valid element of a set. 
+	* @throws InvalidSetNameException if setNum is not a valid name of a set.
+	* @return true if setName is the name of a set, false otherwise
+	*/
 	public boolean isSetName(int setName) {
 		checkValidElement(setName);
 		return up[setName] < 0;
 	}
 
-	// setNum must be a valid element of a set. Otherwise, throws 
-	// InvalidElementException. It must also be a valid name of a set. Otherwise,
-	// throws InvalidSetNameException. Prints the elements of the set in the form 
-	// {<element>, <element>, ..., <element>}.
+	/**
+	* @throws InvalidElementException if setNum is not a valid element of a set. 
+	* @throws InvalidSetNameException if setNum is not a valid name of a set.
+	* Prints the elements of the set in the form 
+	* {element, element, ..., element}.
+	*/
 	public void printSet(int setNum) {
 		checkException(setNum);
 		int[] elements = getElements(setNum);
@@ -79,10 +92,11 @@ public class MyDisjSets implements DisjointSets {
 		System.out.println(elements[elements.length - 1] + "}");
 	}
 		
-	// x must be a valid element of a set. Otherwise, throws 
-	// InvalidElementException.
-	// returns the name of the set x is in. Performs path compression to make
-	// future finds faster.
+	/**
+	* @throws InvalidElementException if x is not a valid element.
+	* @return the name of the set x is in. 
+	* Performs path compression to make future finds faster.
+	*/
 	public int find(int x) {
 		checkValidElement(x);
 		int root = x; 
@@ -99,10 +113,13 @@ public class MyDisjSets implements DisjointSets {
 		return root;
 	}
 	
-	// throws InvalidElementException if setNum is not a valid element; throws
-	// InvalidSetName exception if setNum is not the name of a set.
-	// returns the an array of the elements of setNum. Performs path compression 
-	// to make future calls on finds and getElements faster.
+	/**
+	* @throws InvalidElementException if setNum is not a valid element of a set. 
+	* @throws InvalidSetNameException if setNum is not a valid name of a set.
+	* @return the an array of the elements of setNum. 
+	* Performs path compression 
+	* to make future calls on finds and getElements faster.
+	*/
 	public int[] getElements(int setNum) {
 		checkException(setNum);
 		int[] result = new int[-up[setNum]];
@@ -118,22 +135,27 @@ public class MyDisjSets implements DisjointSets {
 		return result;
 	}
 
-	// if n is not an element of any set, throws InvalidElementException.
-	// if n is a valid element, but not the name of a set, throws 
-	// InvalidSetNameException.
+	/**
+	* @throws InvalidElementException if setNum is not a valid element of a set. 
+	* @throws InvalidSetNameException if setNum is not a valid name of a set.
+	*/
 	private void checkException(int n) {
 		checkValidElement(n);
 		checkName(n);
 	}
 
-	// if setName is not the name of a set, throws InvalidSetNameException.
+	/**
+	* @throws InvalidSetNameException if setName is not the name of a set.
+	*/
 	private void checkName(int setName) {
 		if (!isSetName(setName))
 			throw new InvalidSetNameException();
 	}
-
-	// if element is not an element of any set (i.e. not in the range 0 to N - 1,
-	// where N is the integer passed to the constructor), throws InvalidElementException.
+	
+	/**
+	* @throws InvalidElementException if element is not an element of any set
+	* i.e. not in the range 0 to N - 1, where N is the integer passed to the constructor.
+	*/
 	private void checkValidElement(int element) {
 		if (up.length <= element || element < 0)
 			throw new InvalidElementException();

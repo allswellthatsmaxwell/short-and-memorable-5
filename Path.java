@@ -1,4 +1,10 @@
-
+/**
+* Max Peterson, Minerva Chen
+* 11/25/2013
+* Path
+*
+* Stores a path from one vertex to another in a graph, as well as the cost of that path.
+*/
 import java.util.List;
 
 public class Path {

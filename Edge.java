@@ -1,14 +1,14 @@
 /**
- * Representation of a directed graph edge.
- */
-
-// Minerva Chen, Max Peterson
-// 11/16/2013
-//
-// Edge
+* Minerva Chen, Max Peterson
+* 11/25/2013
+* Edge
+*
+* Representation of a directed graph edge.
+* Implements Comparable
+*/
 
 public class Edge implements Comparable<Edge> {
-	private final Vertex from,to;
+	private final Vertex from, to;
 	private final int w;
 
 	/**
@@ -25,50 +25,51 @@ public class Edge implements Comparable<Edge> {
 		this.w = w;
 	}
 
-	// returns positive if this edge's weight is greater than other's weight,
-	// negative if it is less, and 0 if the edges are of equal weight.
+	/**
+	* compares the weights of two edges
+ 	* @return positive if this edge's weight is greater than other's weight,
+	* negative if it's less, and 0 if the edges are of equal weight.
+	*/
 	public int compareTo(Edge other) {
 		return w - other.w;
 	}
 
-	// returns a copy of this edge
-	public Edge clone() {
-		return new Edge(from, to, w);
-	}
-
    /**
-	 * Get the source vertex
-	 * @return the Vertex that is the source of the edge
-	 */
+	* Get the source vertex
+	* @return the Vertex that is the source of the edge
+	*/
 	public Vertex getSource() {
 		return from;
 	}
 
    /**
-	 * Get the destination vertex
-	 * @return the Vertex that is the destination of the edge
-	 */
+	* Get the destination vertex
+	* @return the Vertex that is the destination of the edge
+	*/
 	public Vertex getDestination() {
 		return to;
 	}
 
    /**
-	 * Get the edge weight (a.k.a. cost)
-	 * @return the weight of the edge
-	 */
+	* Get the edge weight (a.k.a. cost)
+	* @return the weight of the edge
+	*/
 	public int getWeight() {
 		return w;
 	}
 
 	/**
-	 * A string representation of this object
-	 * @return A string of the form <from, to, weight>
-	 */
+	* A string representation of this object
+	* @return A string of the form <from, to, weight>
+	*/
 	public String toString() {
-		return "<"+from+", "+to+", "+w+">";
+		return "<" + from + ", " + to + ", " + w + ">";
 	}
 
-	//auto-generated: hashes on all fields
+	/**
+	* @return an int for hashing
+	* auto-generated: hashes on all fields
+	*/
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -78,7 +79,10 @@ public class Edge implements Comparable<Edge> {
 		return result;
 	}
 
-	//auto-generated: compares all fields
+	/**
+	* @return true if equal, false otherwise
+	* auto-generated: compares all fields
+	*/
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

@@ -2,27 +2,26 @@ import java.util.*;
 import java.io.*;
 
 /**
- * Driver program that reads in a graph and prompts user for shortests paths in the graph.
- * (Intentionally without comments.  Read through the code to understand what it does.)
- */
+* Max Peterson, Minerva Chen
+* 11/22/2013
+* FindPaths
+*
+* Driver program that reads in a graph and prompts user for shortests paths in the graph.
+*/
 
 public class FindPaths {
 	public static void main(String[] args) {
-		/*if(args.length != 2) {
+		if(args.length != 2) {
 			System.err.println("USAGE: java Paths <vertex_file> <edge_file>");
 			System.exit(1);
-		}*/
-		
-		MyGraph g = readGraph("vertex.txt", "edge.txt");
+		}
 
+		MyGraph g = readGraph(args[0],args[1]);
 		Scanner console = new Scanner(System.in);
 		Collection<Vertex> v = g.vertices();
       Collection<Edge> e = g.edges();
-		System.out.println("Vertices are "+v);
-		System.out.println("Edges are "+e);
-		System.out.println();
-		System.out.println(g.getMST());
-      
+		System.out.println("Vertices are " + v);
+		System.out.println("Edges are " + e);
 		while(true) {
 			System.out.print("Start vertex? ");
 			Vertex a = new Vertex(console.nextLine());
@@ -37,19 +36,37 @@ public class FindPaths {
 				System.out.println("no such vertex");
 				System.exit(1);
 			}
-			Path p = g.shortestPath(a, b);
-			System.out.println("Shortest path from " + a + " to " + b);
-			if(p == null){
-				System.out.println("does not exist");
-			} else {
-				for (Vertex vert: p.vertices){
-					System.out.print(vert + " ");
-				}
-				System.out.println(p.cost);
-			}
+			printShortestPath(g, a, b);
 		}
 	}
 
+	/**
+	* prints the shortest path from a to b and the cost of that path. 
+	* If a and b are the same, prints the vertex alone. If no path
+	* exists, prints that no path exists.
+	* @param a a vertex
+	* @param b another vertex
+	*/
+	public static void printShortestPath(MyGraph g, Vertex a, Vertex b) {
+		Path path = g.shortestPath(a, b);
+		System.out.println("Shortest path from " + a + " to " + b + ':');
+		if (path == null)
+			System.out.println("does not exist");
+		else {
+			String result = "";
+			for (Vertex v : path.vertices)
+				result += " " + v;
+			System.out.println(result.substring(1));
+			System.out.println(path.cost);
+		}
+	}
+	
+	/**
+	* reads a graph
+	* @param f1 file name of vertices
+	* @param f2 file name of edges
+	* @return new MyGraph made of vertices and edges
+	*/
 	public static MyGraph readGraph(String f1, String f2) {
 		Scanner s = null;
 		try {
@@ -83,6 +100,6 @@ public class FindPaths {
 			}
 		}
 
-		return new MyGraph(v,e);
+		return new MyGraph(v, e);
 	}
 }

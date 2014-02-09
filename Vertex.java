@@ -1,12 +1,13 @@
 /**
- * Representation of a graph vertex
- */
- //just making sure I can edit-Minerva
+* Minerva Chen, Max Peterson
+* 11/25/2013
+* Vertex
+*
+* Representation of a graph vertex
+*/
 public class Vertex implements Dijkstrable<Vertex> {
-	private final String label;   // label attached to this vertex
+	private final String label; // label attached to this vertex
 	private int costFromStart;
-	private boolean known;
-	private Vertex previous; 
 
 	/**
 	 * Construct a new vertex
@@ -16,66 +17,58 @@ public class Vertex implements Dijkstrable<Vertex> {
 	 * and its previous set to null
 	 */
 	public Vertex(String label) {
-		this(label, Integer.MAX_VALUE, false, null);
+		this(label, 0);
 	}
 
-	// makes a new vertex with the label, the distance from start,
-	// a known value for whether or not we have the shortest path to this
-	// node during Dijkstra's algorithm, and the previous vertex on the path
-	// to get here.
-	private Vertex(String label, int costFromStart, boolean known, Vertex previous) {
+	/**
+	* Construct a new vertex
+	* @param label the label attached to this vertex
+	* @param the distance from a predefined start vertex to this vertex
+	* @throws IllegalArgumentException if label is null
+	* makes a new vertex with the label and the distance from start.
+	*/
+	private Vertex(String label, int costFromStart) {
 		if(label == null)
 			throw new IllegalArgumentException("null");
 		this.label = label;
 		this.costFromStart = costFromStart;
-		this.known = known;
-		this.previous = previous;
+	}
+	
+	/**
+	* @return a copy of this Vertex
+	*/
+	public Vertex cloneIt() {
+		return new Vertex(label, costFromStart);
 	}
 
-	public void setKnown(boolean known) {
-		this.known = known;
-	}
-
+	/**
+	* updates the cost from a predefined start vertex to this vertex.
+	* @param the new cost
+	*/
 	public void updatePriority(int priority) {
 		costFromStart = priority;
 	}
-	
-	// sets the previous node on the path, i.e. wherever we came from to get here.
-	// for Dijkstra's algorithm.
-	public void setPrevious(Vertex vertex) {
-		previous = vertex;
-	}
 
-	// returns the previous node on the path, i.e. wherever we came from to get here.
-	// for Dijkstra's algorithm.
-	public Vertex getPrevious() {
-		return previous;
-	}
-	
-	// returns a copy of this Vertex
-	public Vertex clone() {
-		return new Vertex(label, costFromStart, known, previous);
-	}
-
-	// returns the distance from start
+	/**
+	* @return the distance from a predefined start vertex
+	*/
 	public int getCost() {
 		return costFromStart;
 	}
 
-	// sets the distance from start
+	/** 
+	* sets the cost from a predefined start vertex
+	* @param the new cost
+	*/
 	public void setCost(int cost) {
 		costFromStart = cost;
 	}
 
-	// returns whether or not the shortest path to this node is known, for Dijkstra's
-	// algorithm
-	public boolean isKnown() {
-		return known;
-	}
-	
-	// returns a positive int if this node is thought to be further from start
-	// than other, negative if this is thought to be closer, and 0 if they're the same
-	// distance from start
+	/** 
+	* @return a positive int if this node is thought to be costlier from a 
+	* predefined start vertex than other, negative if this is thought to 
+	* be cheaper, and 0 if they're the same cost from start
+	*/
 	public int compareTo(Vertex other) {
 		return costFromStart - other.costFromStart;
 	}
@@ -96,7 +89,10 @@ public class Vertex implements Dijkstrable<Vertex> {
 		return label;
 	}
 
-	//auto-generated: hashes on label
+	/**
+	* @return an int to hash on based on label
+	* auto-generated: hashes on label
+	*/
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -104,7 +100,9 @@ public class Vertex implements Dijkstrable<Vertex> {
 		return result;
 	}
 
-	//auto-generated: compares labels
+	/**
+	* auto-generated: compares labels
+	*/
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
